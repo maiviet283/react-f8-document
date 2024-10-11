@@ -1,0 +1,47 @@
+import { useState } from "react"
+
+const orders = [100,200,300]
+
+function App() {
+  
+  const [count,setCount] = useState(() => {
+    const total = orders.reduce((total,cur) => total + cur)
+    return total
+  })
+
+  const handleIncrease = () => {
+    setCount(count+1)
+  }
+
+  const [info,setInfo] = useState({
+    name : 'MAI QUOC VIET',
+    age : 21,
+    address : 'HA TINH'
+  })
+
+  const handleUpdateInfo = () => {
+    setInfo({
+      ...info,
+      crush : 'NGUYEN THI AN'
+    })
+  }
+
+  const [name,setName] = useState()
+  console.log(name)
+
+  return (
+    <div className="App" style={{ padding: 20 }}>
+      <h1>{count}</h1>
+      <button onClick={handleIncrease}>Click Me</button>
+      <h1>{JSON.stringify(info)}</h1>
+      <button onClick={handleUpdateInfo}>crush</button><br></br>
+      <input
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+      <button onClick={() => setName("BABABA")}>OK</button>
+    </div>
+  );
+}
+
+export default App;

@@ -1,0 +1,71 @@
+import { useState, useEffect } from "react"
+
+
+function Content() {
+    const [type, setType] = useState('posts')
+    const [data, setData] = useState([])
+    const [showGoToTop,setShowGoToTop] = useState(false)
+    const list = ['posts', 'comments', 'todos', 'users']
+
+    useEffect(() => {
+        fetch(`https://jsonplaceholder.typicode.com/${type}`)
+            .then(res => res.json())
+            .then(data => {
+                setData(data)
+            })
+    }, [type])
+
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowGoToTop(window.scrollY >= 200)
+        }
+
+        window.addEventListener('scroll',handleScroll)
+        console.log('add')
+
+        return () => {
+            window.removeEventListener('scroll',handleScroll)
+            console.log('remove')
+        }
+    },[])
+
+    return (
+        <div>
+            {list.map(item => (
+                <button
+                    key={item}
+                    onClick={() => setType(item)}
+                    style={{ 
+                        backgroundColor: item === type ? '#333' : 'green'
+                     }}
+                >
+                    {item}
+                </button>
+            ))}
+
+            <ul>
+                {data.map(data => (
+                    <li key={data.id}>
+                        {data.title || data.name}
+                    </li>
+                ))}
+                {
+                    showGoToTop && (
+                        <button
+                            style={{ 
+                                position:'fixed',
+                                right:20,
+                                bottom:20
+                             }}
+                        >
+                            Go To Top
+                        </button>
+                    )
+                }
+            </ul>
+        </div>
+    )
+}
+
+export default Content
